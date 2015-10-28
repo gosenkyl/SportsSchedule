@@ -19,8 +19,8 @@ public class DBUtil {
         this.jdbcTemplate = new JdbcTemplate(myDataSource);
     }
 
-    public List<Map<String, Object>> getList(String query){
-        return this.jdbcTemplate.queryForList(query);
+    public List<Map<String, Object>> getList(String query, Object[] params){
+        return this.jdbcTemplate.queryForList(query, params);
     }
 
     public <T> List<T> getListRowMapper(String query, Class<T> type){

@@ -29,7 +29,7 @@ public class TeamServiceImpl implements TeamService {
 
         //teamList = sport.getTeamList();
 
-        /*Team teamA = new Team();
+        /*TeamObj teamA = new TeamObj();
         teamA.setId(1L);
         teamA.setCity("Arizona");
         teamA.setMascot("Cardinals");
@@ -37,7 +37,7 @@ public class TeamServiceImpl implements TeamService {
         teamA.setSecondaryColor("#FFFFFF"); // White
         teamA.setLogoLink("http://a.espncdn.com/combiner/i?img=/i/teamlogos/nfl/500/ari.png&h=150&w=150");
 
-        Team teamB = new Team();
+        TeamObj teamB = new TeamObj();
         teamB.setId(2L);
         teamB.setCity("Atlanta");
         teamB.setMascot("Falcons");
@@ -45,7 +45,7 @@ public class TeamServiceImpl implements TeamService {
         teamB.setSecondaryColor("#A71930"); // Red
         teamB.setLogoLink("http://a.espncdn.com/combiner/i?img=/i/teamlogos/nfl/500/atl.png&h=150&w=150");
 
-        Team teamC = new Team();
+        TeamObj teamC = new TeamObj();
         teamC.setId(3L);
         teamC.setCity("Baltimore");
         teamC.setMascot("Ravens");
@@ -53,7 +53,7 @@ public class TeamServiceImpl implements TeamService {
         teamC.setSecondaryColor("#000000"); // Black
         teamC.setLogoLink("http://a.espncdn.com/combiner/i?img=/i/teamlogos/nfl/500/bal.png&h=150&w=150");
 
-        Team teamD = new Team();
+        TeamObj teamD = new TeamObj();
         teamD.setId(4L);
         teamD.setCity("Buffalo");
         teamD.setMascot("Bills");
@@ -61,7 +61,7 @@ public class TeamServiceImpl implements TeamService {
         teamD.setSecondaryColor("#C60C30"); // Red
         teamD.setLogoLink("http://a.espncdn.com/combiner/i?img=/i/teamlogos/nfl/500/buf.png&h=150&w=150");
 
-        Team teamE = new Team();
+        TeamObj teamE = new TeamObj();
         teamE.setId(5L);
         teamE.setCity("Carolina");
         teamE.setMascot("Panthers");

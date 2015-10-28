@@ -47,15 +47,17 @@
 
 <body>
 
-	<div class="header">
-		<ul class="header-list">
-			<li>Teams</li>
-			<li>Favorites</li>
-		</ul>
-	</div>
-
 	<div ng-app="teamApp">
 		<div ng-controller="teamController as tc">
+
+			<div class="header">
+				<ul class="header-list">
+					<li>Teams</li>
+					<li>Favorites</li>
+					<li ng-click="changeLeague('NFL')">NFL</li>
+					<li ng-click="changeLeague('MLB')">MLB</li>
+				</ul>
+			</div>
 
 			<div class="team-list">
 				<div class="row">
@@ -66,13 +68,13 @@
 								<div id="secondary-border" ng-style="{'border-style': 'solid', 'border-width': '3px', 'border-color': '{{team.secondaryColor}}'}">
 									<div id="primary-border" ng-style="{'border-style': 'solid', 'border-width': '3px', 'border-color': '{{team.primaryColor}}'}">
 										<div class="team-logo">
-											<img ng-src="http://a.espncdn.com/combiner/i?img=/i/teamlogos/nfl/500/{{team.logoURL}}.png&h=150&w=150"/>
+											<img ng-src="{{team.logoURL}}"/>
 										</div>
 
 										<div class="team-name">
 											<p>{{team.city}}</p>
 											<p>{{team.mascot}}</p>
-											<p>{{team.currentOpponent}}</p>
+											<%--<p>{{team.currentOpponent}}</p>--%>
 										</div>
 									</div>
 								</div>
@@ -82,6 +84,7 @@
 					</div>
 				</div>
 			</div>
+
 		</div>
 	</div>
 
@@ -101,15 +104,19 @@
 
 		var teamFactory = {};
 
-		teamFactory.getAllTeams = function () {
-			return $http.get('/getAllTeams');
+		teamFactory.getAllTeams = function (league) {
+			return $http({
+				url: '/getAllTeams',
+				method: 'GET',
+				params: {league: league}
+			});
 		};
 
-		teamFactory.getSchedules = function (seasonNum, seasonType, week){
+		/*teamFactory.getSchedules = function (seasonNum, seasonType, week){
 
 			return $http.get('http://www.nfl.com/ajax/scorestrip?season='+seasonNum+'&seasonType='+seasonType+'&week='+week);
 
-		};
+		};*/
 
 		return teamFactory;
 
@@ -123,16 +130,17 @@
 			var self = this;
 			self.teams = [];
 
-			getTeams();
+			getTeams('NFL');
 
-			self.currentSchedule = [];
+			//self.currentSchedule = [];
 
-			function getTeams() {
-				teamFactory.getAllTeams()
+			function getTeams(league) {
+				teamFactory.getAllTeams(league)
 						.success(function (teams) {
+							self.teams = {};
 							self.teams = teams;
 							console.log(self.teams);
-							getSchedules();
+							//getSchedules();
 						})
 						.error(function (error) {
 							console.log(error);
@@ -140,7 +148,12 @@
 						});
 			}
 
-			function getSchedules(){
+			$scope.changeLeague = function(league){
+				console.log('Changing to ' + league);
+				getTeams(league);
+			}
+
+			/*function getSchedules(){
 				teamFactory.getSchedules(2015, 'REG', 7)
 						.success(function(schedule){
 							self.currentSchedule = getWeekGameStats(schedule);
@@ -152,7 +165,6 @@
 							console.log("Error Loading Schedule");
 						});
 			}
-
 
 			function appendSchedule(value, index, ar){
 
@@ -175,7 +187,7 @@
 
 				}
 
-			}
+			}*/
 
 			$scope.teamClick = function(team){
 				console.log(team);
