@@ -6,6 +6,9 @@
 	<title>Sports Schedule</title>
 
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+
+	<link rel="stylesheet" href='<c:url value="/resources/css/ring.css" />' >
+
 </head>
 
 <style>
@@ -43,6 +46,13 @@
 		text-align: center;
 	}
 
+	.loader{
+		position: fixed;
+		top: 50%;
+		left: 50%;
+		margin: -80px 0px 0px -80px;
+	}
+
 </style>
 
 <body>
@@ -59,21 +69,29 @@
 				</ul>
 			</div>
 
-			<div class="team-list">
+			<div ng-show="loading">
+				<div class="loader">
+					<div class='uil-ring-css' style='-webkit-transform:scale(0.93)'>
+						<div></div>
+					</div>
+				</div>
+			</div>
+
+			<div ng-show="!loading" class="team-list">
 				<div class="row">
 					<div ng-repeat="team in tc.teams">
 						<div class="team-wrapper col-md-3">
 
 							<div class="team-item" ng-click="teamClick(team)">
-								<div id="secondary-border" ng-style="{'border-style': 'solid', 'border-width': '3px', 'border-color': '{{team.secondaryColor}}'}">
-									<div id="primary-border" ng-style="{'border-style': 'solid', 'border-width': '3px', 'border-color': '{{team.primaryColor}}'}">
+								<div id="secondary-border" ng-style="{'border-style': 'solid', 'border-width': '3px', 'border-color': team.secondaryColor}">
+									<div id="primary-border" ng-style="{'border-style': 'solid', 'border-width': '3px', 'border-color': team.primaryColor}">
 										<div class="team-logo">
 											<img ng-src="{{team.logoURL}}"/>
 										</div>
 
 										<div class="team-name">
-											<p>{{team.city}}</p>
-											<p>{{team.mascot}}</p>
+											<p ng-bind="team.city"></p>
+											<p ng-bind="team.mascot"></p>
 											<%--<p>{{team.currentOpponent}}</p>--%>
 										</div>
 									</div>
@@ -125,8 +143,6 @@
 	teamApp.controller('teamController', ['$scope', 'teamFactory',
 		function ($scope, teamFactory) {
 
-			console.log('begin');
-
 			var self = this;
 			self.teams = [];
 
@@ -135,10 +151,13 @@
 			//self.currentSchedule = [];
 
 			function getTeams(league) {
+				$scope.loading = true;
+				//alert('test2');
 				teamFactory.getAllTeams(league)
 						.success(function (teams) {
-							self.teams = {};
+							self.teams = [];
 							self.teams = teams;
+							$scope.loading = false;
 							console.log(self.teams);
 							//getSchedules();
 						})
@@ -152,42 +171,6 @@
 				console.log('Changing to ' + league);
 				getTeams(league);
 			}
-
-			/*function getSchedules(){
-				teamFactory.getSchedules(2015, 'REG', 7)
-						.success(function(schedule){
-							self.currentSchedule = getWeekGameStats(schedule);
-							console.log(self.currentSchedule);
-							self.teams.forEach(appendSchedule);
-						})
-						.error(function(error){
-							console.log(error);
-							console.log("Error Loading Schedule");
-						});
-			}
-
-			function appendSchedule(value, index, ar){
-
-				console.log('Team: ' + value.nflAbbr);
-
-				for(var i=0; i<self.currentSchedule.gameStats.length; i++) {
-
-					if(self.currentSchedule.gameStats[i].homeTeam.abbrCityname ==  value.nflAbbr){
-						value.currentOpponent = self.currentSchedule.gameStats[i].awayTeam.abbrCityname;
-						console.log('Playing: ' + self.currentSchedule.gameStats[i].awayTeam.abbrCityname);
-						break;
-					} else if(self.currentSchedule.gameStats[i].awayTeam.abbrCityname == value.nflAbbr){
-						value.currentOpponent = self.currentSchedule.gameStats[i].homeTeam.abbrCityname;
-						console.log('Playing: ' + self.currentSchedule.gameStats[i].homeTeam.abbrCityname);
-						break;
-					}
-
-					value.currentOpponent = 'BYE';
-					console.log('Playing: BYE');
-
-				}
-
-			}*/
 
 			$scope.teamClick = function(team){
 				console.log(team);
